@@ -1,0 +1,59 @@
+steps:
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - '-c'
+      - gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+    entrypoint: bash
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - ${_IMAGE_LOCATION}/${_IMAGE_NAME}:$SHORT_SHA
+      - '-t'
+      - ${_IMAGE_LOCATION}/${_IMAGE_NAME}:latest
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - '--all-tags'
+      - ${_IMAGE_LOCATION}/${_IMAGE_NAME}
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - '-c'
+      - |
+        set -e
+
+        echo "Fetching secret from Secret Manager..."
+
+        SECRET_VALUE=$$(gcloud secrets versions access latest \
+          --secret=app-variable \
+          --project=mj-vibe11)
+
+        echo "Raw secret:"
+        echo "$$SECRET_VALUE"
+
+        FORMATTED_ENV=$$(echo "$$SECRET_VALUE" | paste -sd "," -)
+
+        echo "Formatted env vars:"
+        echo "$$FORMATTED_ENV"
+
+        gcloud run deploy ${_SERVICE} \
+          --image ${_IMAGE_LOCATION}/${_IMAGE_NAME}:latest \
+          --region ${_REGION} \
+          --platform managed \
+          --allow-unauthenticated \
+          --set-env-vars GCP_PROJECT_ID=mj-vibe11 \
+          --set-env-vars FIRESTORE_PROJECT=mj-vibe11 \
+          --set-env-vars "$$FORMATTED_ENV" \
+          --set-secrets APP_SECRET=app-secret:latest \
+          --min-instances=0 \
+          --max-instances=1
+    entrypoint: bash
+timeout: 1200s
+images:
+  - ${_IMAGE_LOCATION}/${_IMAGE_NAME}:latest
+options:
+  logging: CLOUD_LOGGING_ONLY
+substitutions:
+  _IMAGE_LOCATION: us-central1-docker.pkg.dev/mj-vibe11/webapp
+  _REGION: us-central1
