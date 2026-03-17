@@ -1,0 +1,11 @@
+{
+  "name": "nuxt-client",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^3.12.4"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "nuxtjs-nodejs-firestore",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:frontend": "npm --prefix frontend install && npm --prefix frontend run build",
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "firebase-admin": "^12.6.0"
+  }
+}
