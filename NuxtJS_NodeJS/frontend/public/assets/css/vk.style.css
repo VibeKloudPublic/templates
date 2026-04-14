@@ -54,7 +54,7 @@ h4 {
        SCROLL REVEAL
     ════════════════════════════════════════ */
 .sr {
-  opacity: 0;
+  /*opacity: 0;*/
   transform: translateY(32px);
   transition: opacity .72s cubic-bezier(.22, .68, 0, 1.2),
     transform .72s cubic-bezier(.22, .68, 0, 1.2);
