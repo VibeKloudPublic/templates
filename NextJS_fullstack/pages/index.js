@@ -1,70 +1,41 @@
-import { useState } from 'react';
-import Link from 'next/link';
-
 export default function HomePage() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const submitProduct = async (event) => {
-    event.preventDefault();
-    setMessage('');
-    setLoading(true);
-
-    try {
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, description })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to create product.');
-      }
-
-      setName('');
-      setDescription('');
-      setMessage('Product created successfully.');
-    } catch (error) {
-      setMessage(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const features = [
+    ['Google Cloud Native', 'Automated Provisioning'],
+    ['Runs fully on your GCP', 'Secure IAM roles'],
+    ['No manual setup required', 'HTTPS endpoint with SSL'],
+    ['Cloud Run service', 'Secrets Managed']
+  ];
 
   return (
-    <main className="container">
-      <h1>Create Product</h1>
-      <form onSubmit={submitProduct} className="card">
-        <label htmlFor="name">Product Name</label>
-        <input
-          id="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          required
-        />
+    <section className="hiw-section" id="how-it-works">
+      <div className="container">
+        <div className="text-center mb-5">
+          <div className="mx-auto">
+            <img src="/vk-saas-illustration.svg" alt="Cloud deployment illustration" width="50%" />
+          </div>
+          <h2 className="section-title">
+            🚀 Congratulations! <br /> Your App is Live on your own Google Cloud
+          </h2>
+          <p className="section-sub mx-auto mt-3">
+            Deployed successfully with automated infrastructure, CI/CD, and secure configuration.
+          </p>
+        </div>
 
-        <label htmlFor="description">Product Description</label>
-        <textarea
-          id="description"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          required
-        />
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Saving...' : 'Create Product'}
-        </button>
-      </form>
-
-      {message && <p>{message}</p>}
-
-      <Link href="/products">View Product List</Link>
-    </main>
+        <div className="row g-3">
+          {features.map((column) => (
+            <div className="col-md-3 col-12" key={column[0]}>
+              <div className="d-flex flex-column align-items-stretch">
+                {column.map((item) => (
+                  <div className="tag-pill mb-2" key={item}>
+                    <span className="dot" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

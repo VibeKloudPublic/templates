@@ -1,32 +1,134 @@
 ---
+const features = [
+  ['Google Cloud Native', 'Automated Provisioning'],
+  ['Runs fully on your GCP', 'Secure IAM roles'],
+  ['No manual setup required', 'HTTPS endpoint with SSL'],
+  ['Cloud Run service', 'Secrets Managed']
+];
 ---
-<html>
-  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><title>Astro + Node</title></head>
-  <body style="font-family: Arial; max-width: 720px; margin: 2rem auto;">
-    <h1>Astro + Node.js Products</h1>
-    <form id="form">
-      <input id="name" placeholder="Name" required />
-      <input id="price" type="number" placeholder="Price" required />
-      <button>Create</button>
-    </form>
-    <ul id="list"></ul>
-    <script>
-      async function load() {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        document.getElementById('list').innerHTML = data.map((p) => `<li>${p.name} - $${p.price}</li>`).join('');
-      }
-      document.getElementById('form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await fetch('/api/products', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: document.getElementById('name').value, price: Number(document.getElementById('price').value) })
-        });
-        e.target.reset();
-        load();
-      });
-      load();
-    </script>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>VibeKloud — Hello World</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <section class="hiw-section" id="how-it-works">
+      <div class="container">
+        <div class="text-center mb-5">
+          <div class="mx-auto">
+            <img src="/vk-saas-illustration.svg" alt="Cloud deployment illustration" width="50%" />
+          </div>
+          <h2 class="section-title">🚀 Congratulations! <br /> Your App is Live on your own Google Cloud</h2>
+          <p class="section-sub mx-auto mt-3">
+            Deployed successfully with automated infrastructure, CI/CD, and secure configuration.
+          </p>
+        </div>
+
+        <div class="row g-3">
+          {
+            features.map((column) => (
+              <div class="col-md-3 col-12">
+                <div class="d-flex flex-column align-items-stretch">
+                  {column.map((item) => (
+                    <div class="tag-pill mb-2">
+                      <span class="dot"></span>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
   </body>
 </html>
+
+<style is:global>
+  :root {
+    --orange: #f97518;
+    --cream: #faf7f2;
+    --dark: #1e0d01;
+    --dark-60: rgba(30, 13, 1, 0.6);
+    --white: #ffffff;
+    --border: rgba(30, 13, 1, 0.1);
+    --r-pill: 999px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Spectral', serif;
+  }
+
+  section {
+    padding: 96px 0;
+  }
+
+  @media (max-width: 767.98px) {
+    section {
+      padding: 64px 0;
+    }
+  }
+
+  .hiw-section {
+    background: var(--white);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-title {
+    font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .section-sub {
+    font-size: 1.02rem;
+    color: var(--dark-60);
+    line-height: 1.72;
+    max-width: 650px;
+  }
+
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: 8px 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--dark);
+  }
+
+  .tag-pill .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+</style>

@@ -1,42 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
+import './styles.css';
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-
-  const load = async () => {
-    const res = await fetch('/api/products');
-    setProducts(await res.json());
-  };
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  const submit = async (e) => {
-    e.preventDefault();
-    await fetch('/api/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, price: Number(price) })
-    });
-    setName('');
-    setPrice('');
-    load();
-  };
+  const features = [
+    ['Google Cloud Native', 'Automated Provisioning'],
+    ['Runs fully on your GCP', 'Secure IAM roles'],
+    ['No manual setup required', 'HTTPS endpoint with SSL'],
+    ['Cloud Run service', 'Secrets Managed']
+  ];
 
   return (
-    <main style={{ maxWidth: 720, margin: '2rem auto', fontFamily: 'Arial' }}>
-      <h1>React + Node.js Products</h1>
-      <form onSubmit={submit}>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
-        <input value={price} onChange={(e) => setPrice(e.target.value)} type="number" placeholder="Price" required />
-        <button type="submit">Create</button>
-      </form>
-      <ul>{products.map((p) => <li key={p.id}>{p.name} - ${p.price}</li>)}</ul>
-    </main>
+    <section className="hiw-section" id="how-it-works">
+      <div className="container">
+        <div className="text-center mb-5">
+          <div className="mx-auto">
+            <img src="/vk-saas-illustration.svg" alt="Cloud deployment illustration" width="50%" />
+          </div>
+          <h2 className="section-title">
+            🚀 Congratulations! <br /> Your App is Live on your own Google Cloud
+          </h2>
+          <p className="section-sub mx-auto mt-3">
+            Deployed successfully with automated infrastructure, CI/CD, and secure configuration.
+          </p>
+        </div>
+
+        <div className="row g-3">
+          {features.map((column) => (
+            <div className="col-md-3 col-12" key={column[0]}>
+              <div className="d-flex flex-column align-items-stretch">
+                {column.map((item) => (
+                  <div className="tag-pill mb-2" key={item}>
+                    <span className="dot" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
